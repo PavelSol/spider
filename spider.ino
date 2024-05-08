@@ -3,6 +3,9 @@
 #include <FlexiTimer2.h>
 #include <Wire.h>
 #include <SerialCommand.h>
+#include <iarduino_I2C_connect.h>
+
+iarduino_I2C_connect I2C2;
 
 SerialCommand SCmd;
 
@@ -46,8 +49,12 @@ const float turn_y1 = y_start + y_step / 2;
 const float turn_x0 = turn_x1 - temp_b * cos(temp_alpha);
 const float turn_y0 = temp_b * sin(temp_alpha) - turn_y1 - length_side;
 
+float mq9value, mq135value;
+int distance;
+
 void setup()
 {
+  Wire.setClock(400000);
   Wire.begin();
   Serial.begin(9600);
   Serial.println("Robot starts initialization");
@@ -107,6 +114,15 @@ void servo_detach(void)
 void loop()
 {
   SCmd.readSerial();
+  mq9value = I2C2.readByte(8, 0);
+  mq135value = I2C2.readByte(8, 1);
+  distance = I2C2.readByte(8, 2);
+  Serial.print("Значение mq9 ");
+  Serial.println(mq9value);
+  Serial.print("Значение mq135 ");
+  Serial.println(mq135value);
+  Serial.print("Значение дальномера ");
+  Serial.println(distance);
 }
 
 
