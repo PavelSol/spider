@@ -6,8 +6,16 @@
 
 SerialCommand SCmd;
 
+#define MQ9_PIN A0
+#define MQ135_PIN A1
+
 int trigPin = 8;
 int echoPin = 9;
+int mq9pin = 7;
+float mq9value;
+float mq9percents;
+float mq135value;
+float mq135percents;
 
 void setup() {
   Wire.begin(8);
@@ -15,6 +23,7 @@ void setup() {
   Serial.println("Measuring unit initialization");
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(mq9pin, INPUT);
 
 }
 
@@ -35,6 +44,12 @@ void loop() {
 
   Serial.print(distance); 
   Serial.println(" cm"); 
-  delay(100);
-
+  delay(1000);
+  mq9value = analogRead(MQ9_PIN);
+  mq135value = analogRead(MQ135_PIN);
+  Serial.print("Значение mq9 ");
+  Serial.println(mq9value);
+  Serial.print("Значение mq135 ");
+  Serial.println(mq135value);  
+  delay(1000);
 }
